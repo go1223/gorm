@@ -165,8 +165,12 @@ func ParseWithSpecialTableName(dest interface{}, cacheStore *sync.Map, namer Nam
 	}
 
 	for _, field := range schema.Fields {
-		if field.DBName == "" && field.DataType != "" {
-			field.DBName = namer.ColumnName(schema.Table, field.Name)
+		if field.DBName == "" {
+			if field.DataType != "" {
+				field.DBName = namer.ColumnName(schema.Table, field.Name)
+			}
+		} else {
+			field.DBName = namer.ColumnName(schema.Table, field.DBName)
 		}
 
 		if field.DBName != "" {
