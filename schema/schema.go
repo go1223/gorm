@@ -170,7 +170,9 @@ func ParseWithSpecialTableName(dest interface{}, cacheStore *sync.Map, namer Nam
 				field.DBName = namer.ColumnName(schema.Table, field.Name)
 			}
 		} else {
-			field.DBName = namer.ColumnName(schema.Table, field.DBName)
+			if reflect.TypeOf(namer).String() != "schema.NamingStrategy" {
+				field.DBName = namer.ColumnName(schema.Table, field.DBName)
+			}
 		}
 
 		if field.DBName != "" {
